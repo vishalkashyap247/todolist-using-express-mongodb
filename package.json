@@ -1,5 +1,5 @@
 {
-  "name": "todolist-v1",
+  "name": "todolist-v2",
   "version": "2.0.0",
   "description": "Version 1 is all about ejs ExpressJS and Version 2 is about integration of mongooDB into it using mongoose",
   "main": "app.js",
