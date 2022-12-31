@@ -38,17 +38,6 @@ const listSchema = new mongoose.Schema({
 
 const List = mongoose.model("List", listSchema);
 
-function addDefaultItems(){
-    Item.insertMany( defaultItem ,function(err){
-        if(err){
-            console.log(err);
-        }
-        else{
-            // console.log("all 3 items is inerted into monogoDB");
-        }
-    });
-}
-
 app.use(express.urlencoded({extended: true}));//body-parseer
 app.use(express.static("public"));
 
@@ -72,7 +61,14 @@ app.get('/', function(req, res)
         else
         {
             if(items.length == 0){
-                addDefaultItems();
+                Item.insertMany( defaultItem ,function(err){
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    // console.log("all 3 items is inerted into monogoDB");
+                 }
+                });
                 res.redirect('/');
             }
             else{
@@ -99,7 +95,7 @@ app.get("/:newRoute",(req,res)=>{
                     name: customListName,
                     item: defaultItem
                 });
-                list.save().then(()=>{res.redirect('/'+ customListName );});
+                list.save().then(()=>{res.redirect('/'+ customListName );}).catch(err => res.status(501).send("User- query promise was rejected. Handle according to specific case."));
             }
             else
             {
@@ -120,12 +116,12 @@ app.post("/", function(req, res)
     });
 
     if(listName === "Today"){
-        newItem.save().then(()=>{res.redirect('/')});
+        newItem.save().then(()=>{res.redirect('/')}).catch(err => res.status(501).send("User- query promise was rejected. Handle according to specific case."));
     }
     else{
         List.findOne({name: listName}, function(err, foundList){
             foundList.item.push(newItem);
-            foundList.save().then(()=>{res.redirect('/'+listName);});
+            foundList.save().then(()=>{res.redirect('/'+listName);}).catch(err => res.status(501).send("User- query promise was rejected. Handle according to specific case."));
             // console.log("ok we have found "+ foundList);
         });
     }
