@@ -10,7 +10,7 @@ const mongoose = require('mongoose');
 mongoose.set('strictQuery', false);//to remove warning
 // mongoose.connect('mongodb://127.0.0.1:27017/todolistDB');
 
-mongoose.connect(process.env.mongodb_uri+"/todolistDB");
+mongoose.connect(process.env.mongodb_uri);
 
 const itemsSchema = new mongoose.Schema({
     name: String
